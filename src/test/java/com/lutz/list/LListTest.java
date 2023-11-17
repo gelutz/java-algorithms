@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
+import java.util.Objects;
 
 
 public class LListTest {
@@ -52,7 +52,7 @@ public class LListTest {
         LList<String> strings = new LList<>();
         strings.add("");
 
-        assert strings.get(0) == "";
+        assert Objects.equals(strings.get(0), "");
 
         LList<Boolean> booleans = new LList<>();
         booleans.add(true);
@@ -113,12 +113,39 @@ public class LListTest {
 
         LList listed = new LList();
 
-        for (Integer i: sut) {
+        for (Integer i : sut) {
             listed.add(i);
         }
 
         assert sut.get(0) == listed.get(0);
         assert sut.get(1) == listed.get(1);
         assert sut.get(2) == listed.get(2);
+    }
+
+    @Test
+    public void assertThatCanCreateSublist() {
+        sut.addMany(0, 1, 2, 3);
+
+        LList<Integer> sublist = sut.sublist(0, 2);
+
+        assert sublist.size() == 3;
+        assert (Objects.equals(sublist.get(0), sut.get(0)) &&
+                    Objects.equals(sublist.get(1), sut.get(1)));
+
+        sublist = sut.sublist(1, sut.size()); // copia do inicio ao fim
+
+        assert sublist.size() == 3;
+        assert (Objects.equals(sublist.get(0), sut.get(1)) &&
+                    Objects.equals(sublist.get(1), sut.get(2)));
+    }
+
+    @Test
+    public void assertThatSorts() {
+        // TODO recreate a sort algorithm eventually
+        sut.addMany(0, 2, 3, 1, 4);
+        sut.sort();
+        assert Objects.equals(sut.get(0), 0);
+        assert Objects.equals(sut.get(1), 1);
+        assert Objects.equals(sut.get(2), 2);
     }
 }

@@ -2,20 +2,28 @@ package com.lutz.list;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
+
 public class LList<T> implements Iterable<T> {
     private T[] elements = (T[]) new Object[] {};
     private int length = 0;
 
     public LList() {}
 
+    public static <T> LList of(T[] inputArray) {
+        LList newList = new LList<>();
 
-    public int size() {
-        return length;
+        for (T t : inputArray) {
+            newList.add(t);
+        }
+
+        return newList;
+    }
+
+    public Iterator<T> iterator() {
+        return new LIterator(0, elements);
     }
 
     private void grow() { grow(1); }
@@ -30,9 +38,19 @@ public class LList<T> implements Iterable<T> {
         length -= i;
     }
 
-    public void add(T o) {
+    public int size() {
+        return length;
+    }
+
+    public void add(T object) {
         grow();
-        elements[length - 1] = o;
+        elements[length - 1] = object;
+    }
+
+    public void addMany(T... objects) {
+        for (T o : objects) {
+            add(o);
+        }
     }
 
     public void remove(int i) {
@@ -71,8 +89,14 @@ public class LList<T> implements Iterable<T> {
         throw new NoSuchElementException();
     }
 
-    public Iterator<T> iterator() {
-        return new LIterator(0, elements);
+    public LList<T> sublist(int start, int end) {
+        int plus = (end == length) ? 0 : 1;
+        T[] newList = Arrays.copyOfRange(elements, start, end + plus);
+        return LList.of(newList);
+    }
+
+    public void sort() {
+        Arrays.sort(elements);
     }
 
     private static final class LIterator<T> implements Iterator<T> {
