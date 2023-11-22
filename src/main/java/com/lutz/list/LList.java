@@ -12,8 +12,8 @@ public class LList<T> implements Iterable<T> {
 
     public LList() {}
 
-    public static <T> LList of(T[] inputArray) {
-        LList newList = new LList<>();
+    public static <T> LList<T> of(T[] inputArray) {
+        LList<T> newList = new LList<>();
 
         for (T t : inputArray) {
             newList.add(t);
@@ -23,7 +23,7 @@ public class LList<T> implements Iterable<T> {
     }
 
     public Iterator<T> iterator() {
-        return new LIterator(0, elements);
+        return new LIterator<>(0, elements);
     }
 
     private void grow() { grow(1); }
@@ -38,7 +38,7 @@ public class LList<T> implements Iterable<T> {
         length -= i;
     }
 
-    public int size() {
+    public Integer size() {
         return length;
     }
 
@@ -48,8 +48,11 @@ public class LList<T> implements Iterable<T> {
     }
 
     public void addMany(T... objects) {
-        for (T o : objects) {
-            add(o);
+        grow(objects.length);
+
+        Iterator<T> it = Arrays.stream(objects).iterator();
+        for (int i = objects.length; i > 0; i--) {
+            elements[length - i] = it.next();
         }
     }
 
@@ -78,7 +81,7 @@ public class LList<T> implements Iterable<T> {
         return elements[index];
     }
 
-    public int find(T element) {
+    public Integer find(T element) {
         // TODO: implementar uma busca melhor (logn)
         for (int i = 0; i < elements.length; i++) {
             if (elements[i].equals(element)) {

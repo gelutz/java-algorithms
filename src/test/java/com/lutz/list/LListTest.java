@@ -48,6 +48,14 @@ public class LListTest {
     }
 
     @Test
+    public void assertManyElementsWereAdded() {
+        sut.addMany(1, 2, 3, 4);
+
+        assert sut.get(1).equals(2);
+        assert sut.get(-1).equals(4);
+    }
+
+    @Test
     public void assertAnyTypeOfObjectCanBeAdded() {
         LList<String> strings = new LList<>();
         strings.add("");
@@ -111,15 +119,15 @@ public class LListTest {
         sut.add(2);
         sut.add(3);
 
-        LList listed = new LList();
+        LList<Integer> listed = new LList<>();
 
         for (Integer i : sut) {
             listed.add(i);
         }
 
-        assert sut.get(0) == listed.get(0);
-        assert sut.get(1) == listed.get(1);
-        assert sut.get(2) == listed.get(2);
+        assert sut.get(0).equals(listed.get(0));
+        assert sut.get(1).equals(listed.get(1));
+        assert sut.get(2).equals(listed.get(2));
     }
 
     @Test
