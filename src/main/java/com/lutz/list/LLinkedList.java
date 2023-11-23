@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 // empaquei tentando descobrir por que minha lista estava na ordem inversa, sendo que a lógica parece certa
 // pesquisei um pouco mas não achei informações sobre isso ser o comportamento comum de uma linked list
-// acredito estar errado e não consigo resolver lol
+// assim é mais parecido com um stack do que com uma lista (pra stack seria útil essa implementação)
 public class LLinkedList<E> extends AbstractList<E> {
     private Node<E> head = new Node<>(null);
     private Node<E> tail = null;
