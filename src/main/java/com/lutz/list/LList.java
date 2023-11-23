@@ -6,24 +6,19 @@ import java.util.NoSuchElementException;
 
 @SuppressWarnings("unchecked")
 
-public class LList<T> implements Iterable<T> {
-    private T[] elements = (T[]) new Object[] {};
-    private int length = 0;
+public class LList<E> extends AbstractList<E> {
+    private E[] elements = (E[]) new Object[] {};
 
     public LList() {}
 
-    public static <T> LList<T> of(T[] inputArray) {
-        LList<T> newList = new LList<>();
+    static <E> LList<E> of(E[] inputArray) {
+        LList<E> newList = new LList<>();
 
-        for (T t : inputArray) {
+        for (E t : inputArray) {
             newList.add(t);
         }
 
         return newList;
-    }
-
-    public Iterator<T> iterator() {
-        return new LIterator<>(0, elements);
     }
 
     private void grow() { grow(1); }
@@ -32,35 +27,38 @@ public class LList<T> implements Iterable<T> {
         length += i;
     }
 
-    private void shrink() { shrink(1); }
-    private void shrink(int i) {
-        elements = Arrays.copyOf(elements, length - i);
-        length -= i;
+    private void shrink() {
+        elements = Arrays.copyOf(elements, length - 1);
+        length -= 1;
     }
 
-    public Integer size() {
-        return length;
+    @Override
+    public Iterator<E> iterator() {
+        return new LIterator<>(0, elements);
     }
 
-    public void add(T object) {
+    @Override
+    public void add(E object) {
         grow();
         elements[length - 1] = object;
     }
 
-    public void addMany(T... objects) {
+    @Override
+    public void addMany(E... objects) {
         grow(objects.length);
 
-        Iterator<T> it = Arrays.stream(objects).iterator();
+        Iterator<E> it = Arrays.stream(objects).iterator();
         for (int i = objects.length; i > 0; i--) {
             elements[length - i] = it.next();
         }
     }
 
+    @Override
     public void remove(int i) {
-        T[] firstSection = Arrays.copyOfRange(elements, 0, i);
-        T[] secondSection = Arrays.copyOfRange(elements, i + 1, length);
+        E[] firstSection = Arrays.copyOfRange(elements, 0, i);
+        E[] secondSection = Arrays.copyOfRange(elements, i + 1, length);
 
-        T[] tempElements = (T[]) new Object[length - 1];
+        E[] tempElements = (E[]) new Object[length - 1];
 
         System.arraycopy(firstSection, 0, tempElements, 0, firstSection.length);
 
@@ -73,7 +71,8 @@ public class LList<T> implements Iterable<T> {
         elements = tempElements;
     }
 
-    public T get(int index) {
+    @Override
+    public E get(int index) {
         if (index < 0) {
             index = length + index;
         }
@@ -81,7 +80,8 @@ public class LList<T> implements Iterable<T> {
         return elements[index];
     }
 
-    public Integer find(T element) {
+    @Override
+    public Integer index(E element) {
         // TODO: implementar uma busca melhor (logn)
         for (int i = 0; i < elements.length; i++) {
             if (elements[i].equals(element)) {
@@ -92,9 +92,9 @@ public class LList<T> implements Iterable<T> {
         throw new NoSuchElementException();
     }
 
-    public LList<T> sublist(int start, int end) {
+    public LList<E> sublist(int start, int end) {
         int plus = (end == length) ? 0 : 1;
-        T[] newList = Arrays.copyOfRange(elements, start, end + plus);
+        E[] newList = Arrays.copyOfRange(elements, start, end + plus);
         return LList.of(newList);
     }
 
@@ -122,7 +122,7 @@ public class LList<T> implements Iterable<T> {
         @Override
         public T next() {
             if (!hasNext()) {
-                throw new NoSuchElementException();
+                throw new IndexOutOfBoundsException();
             }
 
             return elements[cursor++];

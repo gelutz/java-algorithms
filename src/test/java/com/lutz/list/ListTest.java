@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
-
-public class LListTest {
-    LList<Integer> sut;
+// TODO pensar nos motivos de LList ser diferente de LList e mostrar isso com os testes
+public class ListTest {
+    LList<Integer> sut; // LList está sendo usado como exemplo
 
     @BeforeEach
     public void setUp() {
@@ -98,8 +98,8 @@ public class LListTest {
         sut.add(1);
         sut.add(2);
 
-        assert sut.find(1) == 0;
-        assert sut.find(2) == 1;
+        assert sut.index(1) == 0;
+        assert sut.index(2) == 1;
     }
 
     @Test
@@ -109,8 +109,8 @@ public class LListTest {
         sut.add(2); // repetido de propósito
         sut.add(1);
 
-        assert sut.find(2) == 0;
-        assert sut.find(1) == 3;
+        assert sut.index(2) == 0;
+        assert sut.index(1) == 3;
     }
 
     @Test
