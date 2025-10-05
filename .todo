@@ -1,0 +1,12 @@
+# Observações
+- [] Não to com 100% de certeza que o binary search tá correto
+
+
+# Main
+- [] Refatorar Binary Search para poder ser usado em qualquer tipo de array (Object[])
+
+# Tests
+- [] Refatorações
+  - [] sort/Example.java
+  - [] search/Example.java
+  - [] maze/Example.java

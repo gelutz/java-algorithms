@@ -4,12 +4,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-@SuppressWarnings("unchecked")
-
 public class LList<E> extends AbstractList<E> {
     private E[] elements = (E[]) new Object[] {};
 
-    public LList() {}
+    public LList() {
+    }
 
     static <E> LList<E> of(E[] inputArray) {
         LList<E> newList = new LList<>();
@@ -21,7 +20,10 @@ public class LList<E> extends AbstractList<E> {
         return newList;
     }
 
-    private void grow() { grow(1); }
+    private void grow() {
+        grow(1);
+    }
+
     private void grow(int i) {
         elements = Arrays.copyOf(elements, length + i);
         length += i;
@@ -32,18 +34,15 @@ public class LList<E> extends AbstractList<E> {
         length -= 1;
     }
 
-    @Override
     public Iterator<E> iterator() {
         return new LIterator<>(0, elements);
     }
 
-    @Override
     public void add(E object) {
         grow();
         elements[length - 1] = object;
     }
 
-    @Override
     public void addMany(E... objects) {
         grow(objects.length);
 
@@ -53,7 +52,6 @@ public class LList<E> extends AbstractList<E> {
         }
     }
 
-    @Override
     public void remove(int i) {
         E[] firstSection = Arrays.copyOfRange(elements, 0, i);
         E[] secondSection = Arrays.copyOfRange(elements, i + 1, length);
@@ -71,7 +69,6 @@ public class LList<E> extends AbstractList<E> {
         elements = tempElements;
     }
 
-    @Override
     public E get(int index) {
         if (index < 0) {
             index = length + index;
@@ -80,7 +77,6 @@ public class LList<E> extends AbstractList<E> {
         return elements[index];
     }
 
-    @Override
     public Integer index(E element) {
         // TODO: implementar uma busca melhor (logn)
         for (int i = 0; i < elements.length; i++) {
@@ -113,13 +109,10 @@ public class LList<E> extends AbstractList<E> {
             end = items.length;
         }
 
-
-        @Override
         public boolean hasNext() {
             return cursor < end;
         }
 
-        @Override
         public T next() {
             if (!hasNext()) {
                 throw new IndexOutOfBoundsException();
